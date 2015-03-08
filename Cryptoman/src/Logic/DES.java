@@ -11,7 +11,7 @@ import java.io.*;
 public class DES {
     private String message;
     private String key;
-    private LinkedList<String> keys;
+    private LinkedList<String> keys = new LinkedList<String>();
 
     public DES(String message, String key) {
         this.message = message;
@@ -61,7 +61,7 @@ public class DES {
         //System.out.println(k);
         //System.out.println(cd);
         for (int i = 0; i < cd.size() ; i++) {
-            newk += k.charAt( cd.get(i)) ;
+            newk += k.charAt( cd.get(i) - 1) ;
         }
         //System.out.println(newk);
         String c0 = newk.substring(0,28);
@@ -80,13 +80,34 @@ public class DES {
      * @return
      */
     public String pc2(String c, String d){
-
-        String key = "";
-        return key;
+        String cd = c + d;
+        String k = "";
+        LinkedList<Integer> pc = new LinkedList<Integer>(Arrays.asList(14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2, 14, 52, 31, 37, 47, 55, 30 ,40, 51, 42, 33, 48, 44, 49, 39, 56, 34, 53, 46 ,42, 50, 36, 29, 32));
+        for (int i = 0; i < pc.size() ; i++) {
+            k += cd.charAt( pc.get(i) -1 ) ;
+        }
+        return k;
+    }
+    
+    public String leftShift(String a){
+    String z = "";
+    for (int i = 0; i < a.length(); i++) {
+            z += a.charAt( ( i%( a.length() - 1 ) ) + 1 );
+        }
+    return z;
     }
 
     public void  keyGenerator(){
-        LinkedList<String> cd = pc1(this.key);
+        LinkedList<String> cd = pc1(key);
+        String c,d;
+        for (int i = 0; i < 16; i++) {
+            c = leftShift(cd.get(0)); 
+            d = leftShift(cd.get(1));
+            keys.add(pc2(c,d));   
+        }
+        
+        
+        
         
 
     }
@@ -104,16 +125,10 @@ public class DES {
     public static void main(String[] args) {
 
         DES des = new DES("Hello World", "danielfe");
-        /*
-        LinkedList<String> a =  des.convertMessageToBytes(des.message);
-        String k = des.convertKeyToBytes(des.key);
-        System.out.println(des.key);
-        System.out.println(k);
-        System.out.println(des.message);
-        System.out.println(a);
-        */
-        System.out.println(des.key);
-        System.out.println(des.pc1(des.key));
+        
+        des.keyGenerator();
+        System.out.println( des.keys.size()+ " "+ des.keys);
+        
     }
 
 
