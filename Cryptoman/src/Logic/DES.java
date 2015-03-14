@@ -136,7 +136,7 @@ public class DES {
     //--------------- Phase 2 ---------------------    
     
     public String innerFunction(String ri, String keyi){
-        
+        String c = XOR(expantion(ri), keyi);
         String infu = "";
         return infu;
     }
@@ -164,6 +164,15 @@ public class DES {
             else a +=0 ;
         }
         return a;
+    }
+    
+    public String sbox(String m){
+        LinkedList<String[][]> s_boxes = new LinkedList<String[][]>();
+        s_boxes.add({{}})
+        
+        String c = "";
+        return c;
+        
     }
     
     
